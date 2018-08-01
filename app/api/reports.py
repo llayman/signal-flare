@@ -10,7 +10,6 @@ from app.api.errors import bad_request
 @bp.route('/reports', methods=['POST'])
 def create_report():
     data = request.get_json() or {}
-
     if 'guid' not in data or 'latitude' not in data or 'longitude' not in data:
         return bad_request('must include guid, latitude, and longitude fields')
 
