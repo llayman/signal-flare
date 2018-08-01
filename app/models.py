@@ -1,13 +1,6 @@
-import enum
 from datetime import datetime
 
 from app import db
-
-
-class Type(enum.Enum):
-    flood = "FLOOD"
-    fire = "FIRE"
-    other = "OTHER"
 
 
 class Report(db.Model):

@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Hi, {{ user.username }}!</h1>
-{% for post in posts %}
-<div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
-{% endfor %}
 
 <body>
 <div id="map"></div>
@@ -25,12 +21,15 @@
 
         for (var i = 0; i < points.length; i++) {
 
+            type_desc = sev_desc = "unknown"
+            icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png';
             mstrokeOpacity = 1.0
             mstrokeColor = '#000000'
             mfillOpacity = 0.0
             mfillColor = '#000000'
 
             if(points[i].severity) {
+                sev_desc = points[i].severity.description;
                 switch(points[i].severity.name) {
                     case "high":
                         mfillOpacity = 0.9
@@ -44,12 +43,15 @@
             }
 
             if(points[i].type) {
+                type_desc = points[i].type.name;
                 switch(points[i].type.name) {
                     case "fire":
                         mstrokeColor = mfillColor = '#FF0000'
+                        icon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
                         break;
                     case "flood":
                         mstrokeColor = mfillColor = '#0000FF'
+                        icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
                         break;
                     default:
                         mstrokeColor = mfillColor = '#00FF00'
@@ -59,21 +61,22 @@
 
 
             var cityCircle = new google.maps.Circle({
-            strokeColor: mstrokeColor,
-            strokeOpacity: mstrokeOpacity,
-            strokeWeight: 2,
-            fillColor: mfillColor,
-            fillOpacity: mfillOpacity,
-            map: map,
-            center: new google.maps.LatLng(points[i].latitude, points[i].longitude),
-            radius: 200
-          });
-/*
-              marker = new google.maps.Marker({
-              position: new google.maps.LatLng(points[i].latitude, points[i].longitude),
-              map: map
+                strokeColor: mstrokeColor,
+                strokeOpacity: mstrokeOpacity,
+                strokeWeight: 2,
+                fillColor: mfillColor,
+                fillOpacity: mfillOpacity,
+                map: map,
+                center: new google.maps.LatLng(points[i].latitude, points[i].longitude),
+                radius: 200
             });
-*/
+
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(points[i].latitude, points[i].longitude),
+                map: map,
+                icon: icon,
+                title: type_desc + ' - ' + sev_desc
+            });
         }
 
         {% endif %}
