@@ -33,7 +33,7 @@ class Report(db.Model):
             'timestamp': self.timestamp.isoformat() + 'Z',
             'latitude': self.latitude,
             'longitude': self.longitude,
-            'type:': self.type.to_dict(),
+            'type': self.type.to_dict(),
             'severity': self.severity.to_dict(),
             'guid': self.guid
         }

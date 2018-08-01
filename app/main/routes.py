@@ -22,13 +22,14 @@ def index():
     ]
 
     reports = Report.query.all()
-    data = {
-        'items': [item.to_dict() for item in reports],
-        '_meta': {
-            'total_items': len(reports)
-        }
-    }
+    items = [item.to_dict() for item in reports]
+    # data = {
+    #     'items': [item.to_dict() for item in reports],
+    #     '_meta': {
+    #         'total_items': len(reports)
+    #     }
+    # }
 
-    return render_template('index.html', title='Home', user=user, posts=posts, reports=data)
+    return render_template('index.html', title='Home', user=user, posts=posts, reports=items)
 
 

@@ -19,9 +19,63 @@
             zoom: 13
         });
 
+
         {% if reports %}
-        alert({{ reports}});
-        // map.data.addGeoJson({{ reports }});
+        var points = JSON.parse('{{ reports|tojson }}');
+
+        for (var i = 0; i < points.length; i++) {
+
+            mstrokeOpacity = 1.0
+            mstrokeColor = '#000000'
+            mfillOpacity = 0.0
+            mfillColor = '#000000'
+
+            if(points[i].severity) {
+                switch(points[i].severity.name) {
+                    case "high":
+                        mfillOpacity = 0.9
+                        break;
+                    case "low":
+                        mfillOpacity = 0.3
+                        break;
+                    default:
+                        mfillOpacity = 0.4
+                }
+            }
+
+            if(points[i].type) {
+                switch(points[i].type.name) {
+                    case "fire":
+                        mstrokeColor = mfillColor = '#FF0000'
+                        break;
+                    case "flood":
+                        mstrokeColor = mfillColor = '#0000FF'
+                        break;
+                    default:
+                        mstrokeColor = mfillColor = '#00FF00'
+
+                }
+            }
+
+
+            var cityCircle = new google.maps.Circle({
+            strokeColor: mstrokeColor,
+            strokeOpacity: mstrokeOpacity,
+            strokeWeight: 2,
+            fillColor: mfillColor,
+            fillOpacity: mfillOpacity,
+            map: map,
+            center: new google.maps.LatLng(points[i].latitude, points[i].longitude),
+            radius: 200
+          });
+/*
+              marker = new google.maps.Marker({
+              position: new google.maps.LatLng(points[i].latitude, points[i].longitude),
+              map: map
+            });
+*/
+        }
+
         {% endif %}
     }
 </script>
