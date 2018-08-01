@@ -1,13 +1,27 @@
 import dateutil.parser
 from flask import jsonify, request
 
+from app import db
 from app.api import bp
 from app.models import Report
+from app.api.errors import bad_request
 
 
 @bp.route('/reports', methods=['POST'])
 def create_report():
-    pass
+    data = request.get_json() or {}
+
+    if 'guid' not in data or 'latitude' not in data or 'longitude' not in data:
+        return bad_request('must include guid, latitude, and longitude fields')
+
+    report = Report()
+    report.from_dict(data)
+    db.session.add(report)
+    db.session.commit()
+    response = jsonify(report.to_dict())
+    response.status_code = 201
+    return response
+
 
 @bp.route('/reports', methods=['GET'])
 def get_reports():
