@@ -8,7 +8,7 @@ class Report(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow, nullable=False)
     latitude = db.Column(db.Float, index=True)
     longitude = db.Column(db.Float, index=True)
-    guid = db.Column(db.String(32), index=True, nullable=False)
+    guid = db.Column(db.String(36), index=True, nullable=False)
     type_id = db.Column(db.Integer, db.ForeignKey('type.id'))
     severity_id = db.Column(db.Integer, db.ForeignKey('severity.id'))
 
